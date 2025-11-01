@@ -2,7 +2,7 @@
 title: "Homework: Reproducibility and Professional Communication"
 execute:
   error: true
-author: "Your Name"
+author: "Thu Dang"
 output: html_document
 
 ---
@@ -47,20 +47,30 @@ Then, using what you know about R and Python, try to debug the problem using the
 
 1. Are the question and problem description complete?
 
-> <!-- Your answer here -->
+Not fully. It doesn't show how the meals vector was created or what output was expected. There is also no information about any error messages. 
 
 2. Is the issue reproducible? Does it have a description of the problem, with code that reproduces the problem? What could improve it?
 
-> <!-- Your answer here -->
+The issue is kind of reproducible but but I need more information. It would help if they showed how they defined meals, how they called the function and what error they get. 
 
 3. Is the example minimal? Does it include extra code or information that is not necessary?
 
-> <!-- Your answer here -->
+It is too minimal. It doesn't include important details about where the meals variable comes from and and what the function should return.
 
 4. Does the question describe any attempted solutions?
 
-> <!-- Your answer here -->
+No, they didn't show any attempted solutions. 
 
+*My debugging:* The problem is that meals doesn't exist inside the function. And the function doesn't return anything, so nothing changes after calling it. The function should be like:
+
+```
+ add <- function(meals, str) {
+      meals <- append(meals, as.character(str))  
+    }
+meals <- "banh mi"
+meals <- add(meals, "pho")
+meals
+```
 
 ## Function not working R
 
@@ -99,20 +109,33 @@ mean(z$nitrate,na.rm=TRUE)
 
 1. Are the question and problem description complete?
 
-> <!-- Your answer here -->
+ Mostly complete. They show the full code and shows the error message. They also showed the version that works when they run it step by step. 
 
 2. Is the issue reproducible? Does it have a description of the problem, with code that reproduces the problem? What could improve it?
 
-> <!-- Your answer here -->
+Yes, they give enough information. I can improve the code by using the real argument directory instead of a hard-coded path. The function call should also pass "nitrate" and "sulfate" as strings, not as variables.
 
 3. Is the example minimal? Does it include extra code or information that is not necessary?
 
-> <!-- Your answer here -->
+Mostly minimal, but there is some extra code and the wrong use of the pollutant argument. It should not use z$pollutant directly. 
 
 4. Does the question describe any attempted solutions?
 
-> <!-- Your answer here -->
+Yes, they tried running the code step by step.
 
+*My debugging:* The issue is using z$pollutant instead of z[[pollutant]]. And the function ignores the argument directory and uses the literal string directory. Moreover, pollutant should be used as a string.
+
+```
+pollutantmean <- function(directory, pollutant, id = 1:332){
+    x <- list.files(directory, full.names = TRUE)
+    y <- lapply(x[id], read.csv)
+    z <- do.call(rbind, y)
+
+    mean(z[[pollutant]], na.rm = TRUE)
+}
+
+pollutantmean("specdata", "nitrate", 1:10)
+```
 
 ## Inexplicable error when trying to export my R notebook
 
@@ -140,20 +163,27 @@ You can find this sample file [here](https://raw.githubusercontent.com/unl-stati
 
 1. Are the question and problem description complete?
 
-> <!-- Your answer here -->
+Mostly complete. They show the error and mentions column Species exists, but doesn’t share enough code to recreate the problem. 
 
 2. Is the issue reproducible? Does it have a description of the problem, with code that reproduces the problem? What could improve it?
 
-> <!-- Your answer here -->
+Yes but not fully. The error happened when knitting an R Markdown file, because the R session during knitting is clean. To make it reproducible, they could show how they read the data and which packages were loaded. 
 
 3. Is the example minimal? Does it include extra code or information that is not necessary?
 
-> <!-- Your answer here -->
+Yes, but they pasted too many lines of code that are not directly relating to the error. 
 
 4. Does the question describe any attempted solutions?
 
-> <!-- Your answer here -->
+No. They only showed “No spelling errors,” but didn’t show what they already tried. 
 
+*My debugging:* The error says "object 'Species' not found" even though they can see it in their data. This might be they didn't create the data Gastropods before calling filter(), or they didn't load library(dplyr) in the R Markdown.
+
+````{r echo=FALSE}
+library(dplyr)
+Gastropods <- read.csv("https://raw.githubusercontent.com/unl-statistics/stat850/refs/heads/main/homework/debugging_3.txt")
+filter(Gastropods, Species == "Cellana")
+````
 
 ## Python if elif else statement
 
@@ -197,24 +227,32 @@ if country == "Canada":
 
 1. Are the question and problem description complete?
 
-> <!-- Your answer here -->
+Yes, they clearly explain the problem. 
 
 2. Is the issue reproducible? Does it have a description of the problem, with code that reproduces the problem? What could improve it?
 
-> <!-- Your answer here -->
+Yes, it is very easy to reproduce because the code runs but gives wrong results. 
 
 3. Is the example minimal? Does it include extra code or information that is not necessary?
 
-> <!-- Your answer here -->
+Yes, it only contains what is needed to show the problem. 
 
 4. Does the question describe any attempted solutions?
 
-> <!-- Your answer here -->
+No, they didn't mention anything. 
 
+*My debugging:* The problem is comparing strings instead of numbers. raw_input() returns text, so 50 is like text, not a number. We need to convert it to a float before comparing.
+
+```
+total = float(raw_input('What is the total amount for your online shopping?'))
+```
 
 # Professional Communication
 
 ## Slides
+
+*I created a Quarto slide file slides.qmd with two output formats: reveal.js (HTML) and beamer (PDF).
+I used Overleaf's template to create my CV and then I compiled it to cv.pdf file.*
 
 Create a set of quarto slides in the file slides.qmd. 
 
@@ -237,3 +275,4 @@ Select a CV template that uses either LaTeX or Markdown:
 - https://www.overleaf.com/latex/templates/tagged/cv
 
 Use the template to create a curriculum vitae that has your education, work experience, and any other sections you would like to include. Compile your CV and link to it in your slides. 
+

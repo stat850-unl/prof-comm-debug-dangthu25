@@ -1,0 +1,89 @@
+---
+title: "My Introduction"
+author: "Thu Dang"
+format:
+  revealjs:
+    toc: true           
+    slide-number: true  
+  beamer:
+    toc: true           
+    slide-level: 2      
+    include-in-header: header.tex  
+execute:
+  echo: false
+---
+
+# Hello. Xin chào!
+
+::: {style="font-size:85%; color: darkblue"}
+Hello. My name is *Thu Dang*.
+
+I’m a graduate student in Statistics at the University of Nebraska, Lincoln. I'm from Vietnam.
+
+Nice to meet you 🥰.
+:::
+
+![My picture, when I visited Korea in 2024](images/myimage.jpg){fig-align="left" width="1700"}
+
+# About me
+
+::: {style="font-size:90%; color: darkblue"}
+-   Nickname 🧏‍♂️: Deng Shu (I used to learn Chinese, so this is my Chinese name)
+
+-   Birthday 🎂: August 25, 1995 (I'm a Virgo girl)
+
+-   Hometown 🏘️: Pleiku, Gia Lai, Vietnam (This is a highland in Vietnam)
+
+-   Background 👩‍🎓: Mathematics (Minor: Algebra and Number Theory)
+
+-   Current program ✍️: Statistics, UNL
+
+-   Experience 👩‍🏫: 8 years of experience in teaching (I was a Math teacher, but now I'm a Statistics student)
+:::
+
+# Favorite animal
+
+::: {style="font-size:90%; color: darkblue"}
+I’m a cat lover, meow meow.\
+But sadly, I’m allergic to cat fur.
+:::
+
+![This is my cat. Her name is Tep.](images/catofato.jpg){fig-align="left"}
+
+# Favorite plot
+
+```{r}
+#| echo: false
+#| label: favorite-plot
+
+library(ggplot2) # load ggplot2 package
+
+# Read data
+games <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-16/games.csv', show_col_types = FALSE) 
+
+# Filter the default games
+default_games <- c("Counter-Strike: Global Offensive", "Stardew Valley", "Tabletop Simulator", "Team Fortress 2")
+
+# Create a subset only contains default games
+result <- subset(games, games$gamename %in% default_games)
+
+# Change month to numeric
+result$month_num <- match(result$month, month.name)
+result$date <- result$year + (result$month_num -1)/12
+
+# Draw the plot
+ggplot(data = result, 
+       aes(x = date, y = avg, group = gamename, color = gamename)) + 
+  geom_line()+
+  scale_x_continuous(breaks = seq(2016,2021,1), limits = c(2016,2021))
+```
+
+# My CV
+
+::: {style="font-size:90%; color: darkblue"}
+You can view my CV here: [Open CV (PDF)](cv.pdf)
+
+Or CV Embedded View
+
+<embed src="cv.pdf" type="application/pdf" width="100%" height="600px" />
+:::
